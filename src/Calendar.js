@@ -348,6 +348,11 @@ function Calendar(element, options, eventSources) {
 	function reportEvents(_events) {
 		events = _events;
 		renderEvents();
+
+		var cal = document.getElementById('legend');
+
+		cal.innerHTML = '';
+
 		for(var i in legend) {
 			if(legend.hasOwnProperty(i)) {
 				cal.insertAdjacentHTML('beforeEnd', '<span><div style="width: 20px; height: 15px; background-color: '+i+'"></div><div>' + (Object.keys(legend[i]).map(function(x){return legend[i][x];}).join(', ')) + '</div></span>');
@@ -561,7 +566,6 @@ function Calendar(element, options, eventSources) {
 	$(_element).on('calendarsourceonload', function() {
 		loadingStack++;
 		$(_element).addClass('inLoading');
-		removeCallouts();
 	});
 
 	$(_element).on('calendarsourceloaded', function() {
@@ -569,7 +573,6 @@ function Calendar(element, options, eventSources) {
 		if(loadingStack <= 0) {
 			$(_element).removeClass('inLoading');
 		}
-		CreateCallouts();
 	});
 
 }

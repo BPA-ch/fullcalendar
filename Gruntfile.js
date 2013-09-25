@@ -28,6 +28,7 @@ module.exports = function(grunt) {
 
 	// Combine certain configs for the "meta" template variable (<%= meta.whatever %>)
 	config.meta = _.extend({}, packageConfig, pluginConfig);
+	config.meta.builddate = ( new Date() ).toISOString().replace( /:\d+\.\d+Z$/, "Z" );
 
 	// The "grunt" command with no arguments
 	grunt.registerTask('default', 'archive');

@@ -397,77 +397,23 @@ function EventManager(options, _sources) {
 				decode = JSON.parse(decode);
 				var dateencode = (+new Date(event.start));
 
-				// Old Method
-				/*event.eye = "div onclick='" +
-							"$(\"#BPACalendarRenderPopup_" + decode.ListId + "_" + decode.RowID + "\").click();' ";*/
-				//event.eye = "div onclick='$(\"#BPACalendarRenderPopup_" + decode.ListId + "_" + decode.RowID + "\").parent(\".BPASLViewerLink\").click();'";
 				event.eye = "div id='BPACalendarRenderPopup_" + decode.ListId + "_" + decode.RowID + "_" + dateencode + "_Event'";
 
 				$("body").on("click", "#BPACalendarRenderPopup_" + decode.ListId + "_" + decode.RowID + "_" + dateencode + "_Event", function(event) {
 					$(this).find('.BPASLViewerLink').click();
 				});
 
-				$("body").on("click", ".BPASLViewerLink", function(event){
-  					event.stopPropagation();
-
-  					var e = $(this);
-
-  					var wList = e.attr("data-list"),
-  						wRow = e.attr("data-row"),
-  						wView = e.attr("data-view"),
-  						wUrl = e.attr("data-url"),
-  						wRandom = e.attr("data-random"),
-  						wDetail = e.attr("data-detail"),
-  						wTitle = e.attr("data-title"),
-  						wId = e.attr("data-id");
-
-  					var source = $("#" + wId + "_Event");
-
-  						//$("#" + wId).css("position", source.css("position"));
-  						//$("#" + wId).css("left", source.css("left"));
-  						/*$("#" + wId).css("width", source.width());
-  						$("#" + wId).css("height", source.height());
-
-  						$("#" + wId).css("left", source.offset().left);
-  						$("#" + wId).css("top", source.offset().top);*/
-
-
-  						//$("#" + wId).css("top", source.css("top"));
-
-
-
-  						//$("#" + wId + "_Event").css("z-index", 0);
-
-					SLViewer(wList, wRow, wView, wUrl, 
-						wRandom, "", wDetail, 
-						wTitle, wId);
-				});  
-
-				/*event.eyeimg = "<a class='BPASLViewerLink' href='javascript:void(0);' " +
-							"onclick='" +
-							"SLViewer(\"" + decode.ListId + "\", \"" + decode.RowID +
-							"\", \"" + decode.ViewTitle + "\", \"" + decode.Url +
-							"\", \"" + decode.Random + "\", \"\", " +
-							"\"" + decode.DetailPage + "\", \"" + decode.ItemTitle + "\", " + 
-                            "\"BPACalendarRenderPopup_" + decode.ListId + "_" + decode.RowID + "\");'>";*/
-						
+					
 				event.eyeimg = "<a class='BPASLViewerLink' href='javascript:void(0);' " +
-				"data-list='"+decode.ListId+"' " + 
-				"data-row='"+decode.RowID+"' " + 
-				"data-view='"+decode.ViewTitle+"' " + 
-				"data-url='"+decode.Url+"' " + 
-				"data-random='"+decode.Random+"' " + 
-				"data-detail='"+decode.DetailPage+"' " + 
-				"data-title='"+decode.ItemTitle+"' " + 
-				"data-id='BPACalendarRenderPopup_" + decode.ListId + "_" + decode.RowID + "_" + dateencode + "' >" + 
+				"data-list='"+decode.ListId+"' " +
+				"data-row='"+decode.RowID+"' " +
+				"data-view='"+decode.ViewTitle+"' " +
+				"data-url='"+decode.Url+"' " +
+				"data-random='"+decode.Random+"' " +
+				"data-detail='"+decode.DetailPage+"' " +
+				"data-title='"+decode.ItemTitle+"' " +
+				"data-id='BPACalendarRenderPopup_" + decode.ListId + "_" + decode.RowID + "_" + dateencode + "' >" +
 				"<img src='/_layouts/15/BPA/images/BLANK.GIF' id='BPACalendarRenderPopup_" + decode.ListId + "_" + decode.RowID + "_" + dateencode + "'></a>";
-
-
-				// New Method
-				/*event.eye = "a href='javascript:void(0);' " +  
-							"id='BPARenderViewPopup_"+decode.RowID+"'";							
-				//addCallOutList.push({List: decode.ListId, Row: decode.RowID, Title: decode.ViewTitle, Url: decode.Url, Source: "CalendarCallout_" + decode.Random});
-				addCallOutList.push(decode);*/
 					
 			}
 		}
@@ -475,7 +421,6 @@ function EventManager(options, _sources) {
 		// Generate here legend the's list
 		if(event.color && event.legend) {
 			addLegend(event.color, event.legend);
-			//alert(event.color + " - " + event.legend);
 		}
 		
 

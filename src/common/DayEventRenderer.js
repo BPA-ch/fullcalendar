@@ -233,6 +233,7 @@ function DayEventRenderer() {
 		var isRTL = opt('isRTL');
 		var event = segment.event;
 		var url = event.url;
+		var hasEye = event.eye !== undefined;
 
 		// generate the list of CSS classNames
 		var classNames = [ 'fc-event', 'fc-event-hori' ];
@@ -259,6 +260,8 @@ function DayEventRenderer() {
 
 		if (url) {
 			html += "<a href='" + htmlEscape(url) + "'";
+		}else if(hasEye) {
+			html += "<" + event.eye;			
 		}else{
 			html += "<div";
 		}
@@ -283,8 +286,12 @@ function DayEventRenderer() {
 		html +=
 			"<span class='fc-event-title'>" +
 			htmlEscape(event.title || '') +
-			"</span>" +
-			"</div>";
+			"</span>";
+		if(hasEye) {
+			html += event.eyeimg;
+		}
+					
+		html +=	"</div>";
 		if (segment.isEnd && isEventResizable(event)) {
 			html +=
 				"<div class='ui-resizable-handle ui-resizable-" + (isRTL ? 'w' : 'e') + "'>" +
