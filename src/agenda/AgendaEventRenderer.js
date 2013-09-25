@@ -310,6 +310,7 @@ function AgendaEventRenderer() {
 	function slotSegHtml(event, seg) {
 		var html = "<";
 		var url = event.url;
+		var hasEye = event.eye !== undefined;
 		var skinCss = getSkinCss(event, opt);
 		var classes = ['fc-event', 'fc-event-vert'];
 		if (isEventDraggable(event)) {
@@ -327,6 +328,8 @@ function AgendaEventRenderer() {
 		}
 		if (url) {
 			html += "a href='" + htmlEscape(event.url) + "'";
+		}else if(hasEye) {
+			html += event.eye;
 		}else{
 			html += "div";
 		}
@@ -345,8 +348,13 @@ function AgendaEventRenderer() {
 			htmlEscape(formatDates(event.start, event.end, opt('timeFormat'))) +
 			"</div>" +
 			"<div class='fc-event-title'>" +
-			htmlEscape(event.title || '') +
-			"</div>" +
+			htmlEscape(event.title || '') + " ";
+			
+		if(hasEye) {
+			html += event.eyeimg;
+		}
+
+		html += "</div>" +
 			"</div>" +
 			"<div class='fc-event-bg'></div>";
 		if (seg.isEnd && isEventResizable(event)) {

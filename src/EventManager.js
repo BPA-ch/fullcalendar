@@ -24,7 +24,7 @@ function EventManager(options, _sources) {
 	t.removeEvents = removeEvents;
 	t.clientEvents = clientEvents;
 	t.normalizeEvent = normalizeEvent;
-	
+
 	
 	// imports
 	var trigger = t.trigger;
@@ -41,9 +41,11 @@ function EventManager(options, _sources) {
 	var loadingLevel = 0;
 	var cache = [];
 	
+	var element = t.element;
 	
 	for (var i=0; i<_sources.length; i++) {
 		_addEventSource(_sources[i]);
+		_addEventSourceSwitcher(t.element, _sources[i]);
 	}
 	
 	
@@ -83,7 +85,8 @@ function EventManager(options, _sources) {
 					}
 					// TODO: this technique is not ideal for static array event sources.
 					//  For arrays, we'll want to process all events right in the beginning, then never again.
-				
+
+
 					for (var i=0; i<events.length; i++) {
 						events[i].source = source;
 						normalizeEvent(events[i]);
@@ -132,6 +135,7 @@ function EventManager(options, _sources) {
 			}
 		}else{
 			var url = source.url;
+			$(element).trigger("calendarsourceonload");
 			if (url) {
 				var success = source.success;
 				var error = source.error;
@@ -160,7 +164,6 @@ function EventManager(options, _sources) {
 				if (endParam) {
 					data[endParam] = Math.round(+rangeEnd / 1000);
 				}
-
 				pushLoading();
 				$.ajax($.extend({}, ajaxDefaults, source, {
 					data: data,
@@ -179,6 +182,7 @@ function EventManager(options, _sources) {
 					complete: function() {
 						applyAll(complete, this, arguments);
 						popLoading();
+						$(element).trigger("calendarsourceloaded");
 					}
 				}));
 			}else{
@@ -213,6 +217,12 @@ function EventManager(options, _sources) {
 			normalizeSource(source);
 			sources.push(source);
 			return source;
+		}
+	}
+
+	function _addEventSourceSwitcher(context, source) {
+		if ($.isFunction(source) || $.isArray(source)) {
+			context.insertAdjacentHTML('beforeEnd', '<li data-value="'+source.url+'">' + source.name + '</ul>');
 		}
 	}
 	
@@ -370,6 +380,7 @@ function EventManager(options, _sources) {
 			event.allDay = firstDefined(source.allDayDefault, options.allDayDefault);
 		}
 		if (event.className) {
+
 			if (typeof event.className == 'string') {
 				event.className = event.className.split(/\s+/);
 			}
@@ -377,6 +388,97 @@ function EventManager(options, _sources) {
 			event.className = [];
 		}
 		// TODO: if there is no start date, return false to indicate an invalid event
+
+		if(event.eye !== undefined) {
+			var decode;
+			if(event.eye.startsWith('base64')) {
+				decode = decode64(event.eye.substring(7));
+
+				decode = JSON.parse(decode);
+				var dateencode = (+new Date(event.start));
+
+				// Old Method
+				/*event.eye = "div onclick='" +
+							"$(\"#BPACalendarRenderPopup_" + decode.ListId + "_" + decode.RowID + "\").click();' ";*/
+				//event.eye = "div onclick='$(\"#BPACalendarRenderPopup_" + decode.ListId + "_" + decode.RowID + "\").parent(\".BPASLViewerLink\").click();'";
+				event.eye = "div id='BPACalendarRenderPopup_" + decode.ListId + "_" + decode.RowID + "_" + dateencode + "_Event'";
+
+				$("body").on("click", "#BPACalendarRenderPopup_" + decode.ListId + "_" + decode.RowID + "_" + dateencode + "_Event", function(event) {
+					$(this).find('.BPASLViewerLink').click();
+				});
+
+				$("body").on("click", ".BPASLViewerLink", function(event){
+  					event.stopPropagation();
+
+  					var e = $(this);
+
+  					var wList = e.attr("data-list"),
+  						wRow = e.attr("data-row"),
+  						wView = e.attr("data-view"),
+  						wUrl = e.attr("data-url"),
+  						wRandom = e.attr("data-random"),
+  						wDetail = e.attr("data-detail"),
+  						wTitle = e.attr("data-title"),
+  						wId = e.attr("data-id");
+
+  					var source = $("#" + wId + "_Event");
+
+  						//$("#" + wId).css("position", source.css("position"));
+  						//$("#" + wId).css("left", source.css("left"));
+  						/*$("#" + wId).css("width", source.width());
+  						$("#" + wId).css("height", source.height());
+
+  						$("#" + wId).css("left", source.offset().left);
+  						$("#" + wId).css("top", source.offset().top);*/
+
+
+  						//$("#" + wId).css("top", source.css("top"));
+
+
+
+  						//$("#" + wId + "_Event").css("z-index", 0);
+
+					SLViewer(wList, wRow, wView, wUrl, 
+						wRandom, "", wDetail, 
+						wTitle, wId);
+				});  
+
+				/*event.eyeimg = "<a class='BPASLViewerLink' href='javascript:void(0);' " +
+							"onclick='" +
+							"SLViewer(\"" + decode.ListId + "\", \"" + decode.RowID +
+							"\", \"" + decode.ViewTitle + "\", \"" + decode.Url +
+							"\", \"" + decode.Random + "\", \"\", " +
+							"\"" + decode.DetailPage + "\", \"" + decode.ItemTitle + "\", " + 
+                            "\"BPACalendarRenderPopup_" + decode.ListId + "_" + decode.RowID + "\");'>";*/
+						
+				event.eyeimg = "<a class='BPASLViewerLink' href='javascript:void(0);' " +
+				"data-list='"+decode.ListId+"' " + 
+				"data-row='"+decode.RowID+"' " + 
+				"data-view='"+decode.ViewTitle+"' " + 
+				"data-url='"+decode.Url+"' " + 
+				"data-random='"+decode.Random+"' " + 
+				"data-detail='"+decode.DetailPage+"' " + 
+				"data-title='"+decode.ItemTitle+"' " + 
+				"data-id='BPACalendarRenderPopup_" + decode.ListId + "_" + decode.RowID + "_" + dateencode + "' >" + 
+				"<img src='/_layouts/15/BPA/images/BLANK.GIF' id='BPACalendarRenderPopup_" + decode.ListId + "_" + decode.RowID + "_" + dateencode + "'></a>";
+
+
+				// New Method
+				/*event.eye = "a href='javascript:void(0);' " +  
+							"id='BPARenderViewPopup_"+decode.RowID+"'";							
+				//addCallOutList.push({List: decode.ListId, Row: decode.RowID, Title: decode.ViewTitle, Url: decode.Url, Source: "CalendarCallout_" + decode.Random});
+				addCallOutList.push(decode);*/
+					
+			}
+		}
+
+		// Generate here legend the's list
+		if(event.color && event.legend) {
+			addLegend(event.color, event.legend);
+			//alert(event.color + " - " + event.legend);
+		}
+		
+
 	}
 	
 	

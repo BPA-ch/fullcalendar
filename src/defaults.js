@@ -14,6 +14,9 @@ var defaults = {
 	weekNumberCalculation: 'iso',
 	weekNumberTitle: 'W',
 	
+	startOfBusiness: 8,
+	endOfBusiness: 17,
+	
 	// editing
 	//editable: false,
 	//disableDragging: false,
@@ -39,7 +42,7 @@ var defaults = {
 		day: 'dddd M/d'
 	},
 	timeFormat: { // for event elements
-		'': 'h(:mm)t' // default
+		'': 'h(:mm)tt' // default
 	},
 	
 	// locale
@@ -72,7 +75,9 @@ var defaults = {
 	
 	dropAccept: '*',
 	
-	handleWindowResize: true
+	handleWindowResize: true,
+	LegendText: 'Legend',
+	LegendIcon: ''
 	
 };
 

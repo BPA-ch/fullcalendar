@@ -28,6 +28,7 @@ function Calendar(element, options, eventSources) {
 	t.getView = getView;
 	t.option = option;
 	t.trigger = trigger;
+	t.element = element[0];
 	
 	
 	// imports
@@ -93,6 +94,9 @@ function Calendar(element, options, eventSources) {
 		if (headerElement) {
 			element.prepend(headerElement);
 		}
+
+		element.append('<div id="legendContainer" class="menuicone" style="display: none;"><a href="#"><img src="'+options.LegendIcon+'"><span>'+options.LegendText+'</span></a><div id="legend"></div></div>');
+		element.append('<div id="sourceSwitcher"  style="display: none;"><h3>Source Switcher</h3><ul></ul></div>');
 
 		changeView(options.defaultView);
 
@@ -344,6 +348,26 @@ function Calendar(element, options, eventSources) {
 	function reportEvents(_events) {
 		events = _events;
 		renderEvents();
+		for(var i in legend) {
+			if(legend.hasOwnProperty(i)) {
+				cal.insertAdjacentHTML('beforeEnd', '<span><div style="width: 20px; height: 15px; background-color: '+i+'"></div><div>' + (Object.keys(legend[i]).map(function(x){return legend[i][x];}).join(', ')) + '</div></span>');
+			}
+		}
+
+		if(size(legend) > 0) {
+			$("#legendContainer").show();
+
+			$( "#legend" ).dialog({
+				autoOpen: false,
+				modal: true
+			});
+
+			$("#legendContainer > a").on("click", function() {
+				$( "#legend" ).dialog( "open" );
+			});
+		} else {
+			$("#legendContainer").hide();
+		}
 	}
 
 
@@ -533,4 +557,21 @@ function Calendar(element, options, eventSources) {
 	}
 	
 
+	var loadingStack = 0;
+	$(_element).on('calendarsourceonload', function() {
+		loadingStack++;
+		$(_element).addClass('inLoading');
+		removeCallouts();
+	});
+
+	$(_element).on('calendarsourceloaded', function() {
+		loadingStack--;
+		if(loadingStack <= 0) {
+			$(_element).removeClass('inLoading');
+		}
+		CreateCallouts();
+	});
+
 }
+
+

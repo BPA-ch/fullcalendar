@@ -6,10 +6,10 @@
 	
 		allDayText: 'Toute la journée',
 
-		axisFormat: "HH'h'(:mm)",
+		axisFormat: "HH'h'(mm)",
 		timeFormat: {
-			'': "HH'h'(:mm)",
-			agenda: 'HH:mm{ - HH:mm}'
+			'': "HH'h'(mm)",
+			agenda: "HH'h'mm{ - HH'h'mm}"
 		},
 
 		titleFormat: {

@@ -64,4 +64,4 @@ function setDefaults(d) {
 	$.extend(true, defaults, d);
 }
 
-
+fc.setDefaults = setDefaults;

@@ -38,13 +38,13 @@
 	}
 
 .fc-state-default.fc-corner-left { /* non-theme */
-	border-top-left-radius: 4px;
-	border-bottom-left-radius: 4px;
+	/*border-top-left-radius: 4px;
+	border-bottom-left-radius: 4px;*/
 	}
 
 .fc-state-default.fc-corner-right { /* non-theme */
-	border-top-right-radius: 4px;
-	border-bottom-right-radius: 4px;
+	/*border-top-right-radius: 4px;
+	border-bottom-right-radius: 4px;*/
 	}
 
 /*
@@ -138,7 +138,7 @@
 
 /* Global Event Styles
 ------------------------------------------------------------------------*/
-
+	 
 .fc-event-container > * {
 	z-index: 8;
 	}
@@ -147,11 +147,13 @@
 .fc-event-container > .ui-resizable-resizing {
 	z-index: 9;
 	}
-	 
+
+
 .fc-event {
 	border: 1px solid #3a87ad; /* default BORDER color */
 	background-color: #3a87ad; /* default BACKGROUND color */
 	color: #fff;               /* default TEXT color */
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
 	font-size: .85em;
 	cursor: default;
 	}
@@ -202,15 +204,15 @@ a.fc-event,
 .fc-ltr .fc-event-hori.fc-event-start,
 .fc-rtl .fc-event-hori.fc-event-end {
 	border-left-width: 1px;
-	border-top-left-radius: 3px;
-	border-bottom-left-radius: 3px;
+	/*border-top-left-radius: 3px;
+	border-bottom-left-radius: 3px;*/
 	}
 
 .fc-ltr .fc-event-hori.fc-event-end,
 .fc-rtl .fc-event-hori.fc-event-start {
 	border-right-width: 1px;
-	border-top-right-radius: 3px;
-	border-bottom-right-radius: 3px;
+	/*border-top-right-radius: 3px;
+	border-bottom-right-radius: 3px;*/
 	}
 	
 /* resizable */
@@ -246,6 +248,7 @@ table.fc-border-separate {
 	
 .fc-border-separate th,
 .fc-border-separate td {
+	border-color: #999999;
 	border-width: 1px 0 0 1px;
 	}
 	

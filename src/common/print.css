@@ -2,6 +2,7 @@
  * <%= meta.title %> v<%= meta.version %> Print Stylesheet
  * Docs & License: <%= meta.homepage %>
  * (c) <%= meta.copyright %>
+ * Build date: <%= meta.builddate %> 
  */
 
 /*

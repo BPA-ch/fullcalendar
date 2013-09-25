@@ -2,6 +2,7 @@
  * <%= meta.title %> v<%= meta.version %> Stylesheet
  * Docs & License: <%= meta.homepage %>
  * (c) <%= meta.copyright %>
+ * Build date: <%= meta.builddate %>
  */
 
 
@@ -25,7 +26,6 @@ html .fc,
 	padding: 0;
 	vertical-align: top;
 	}
-
 
 
 /* Header
@@ -106,8 +106,15 @@ html .fc,
 	}
 	
 .fc-view {
-	width: 100%;
-	overflow: hidden;
+	width: 100%; /* needed for view switching (when view is absolute) */
+	/*overflow: hidden;*/
 	}
 	
 	
+/* Opacity
+---*/
+
+.inLoading {
+	opacity: 0.5;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+}
